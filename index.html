@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMM-портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Onest:wght@400;500;700;800;900&family=Playfair+Display:ital,wght@1,500;1,700&display=swap" rel="stylesheet">
+<style>
+/*
+  Макет: тёмная обложка с огромным заголовком и коллажем, бегущие строки-разделители,
+  каждый кейс — отдельный цветной «мир» со схемой Цель / Стратегия / Результат.
+  ВСЕ ТЕКСТЫ помечены data-i18n — перевод на английский добавляется в объект I18N.en внизу страницы.
+*/
+:root{
+  --ink:#16060A;          /* основной фон: почти чёрный бордо */
+  --bord:#6E1022;         /* бордовый */
+  --lime:#CDF04A;         /* лаймовый */
+  --paper:#CDF04A;        /* светлые блоки = лайм */
+  --chalk:#F7F1EA;        /* текст на тёмном */
+  --muted:#A8908F;        /* второстепенный текст */
+  --line:#3A1820;         /* линии на тёмном */
+  --accent:#CDF04A;       /* акцент */
+  --display:"Onest", "Helvetica Neue", Arial, sans-serif;
+  --body:"Onest", "Helvetica Neue", Arial, sans-serif;
+  --serif:"Playfair Display", Georgia, serif;
+  color-scheme: dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--chalk);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,48px)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-.03em;line-height:.95}
+.it{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:-.01em}
+.eyebrow{font-size:14px;letter-spacing:.02em;color:var(--muted)}
+
+/* ---------- верхняя панель ---------- */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:22px;padding-bottom:22px;font-size:15px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.top b{font-weight:700}
+.top nav{display:flex;gap:22px;flex-wrap:wrap}
+.top-r{display:flex;gap:14px;align-items:center}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--chalk)}
+
+/* ---------- обложка ---------- */
+.hero{position:relative;padding-top:48px;padding-bottom:40px;overflow:hidden}
+.slashes{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(22px,3vw,36px);letter-spacing:.05em;color:var(--chalk);white-space:nowrap;overflow:hidden;opacity:.9}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;margin-top:36px}
+.role{font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.role .it{font-weight:500}
+.hero-intro{max-width:46ch;color:#D9CCC8;margin-top:22px;font-size:18px}
+.contacts{display:grid;gap:8px;margin-top:26px;font-size:16px}
+.contacts span{color:var(--muted);display:inline-block;width:92px}
+.hero-photo{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:4/5;max-height:620px;justify-self:end;width:100%;max-width:500px;background:var(--bord)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
+.hero-photo::after{content:"";position:absolute;inset:auto 0 0 0;height:6px;background:var(--lime)}
+.giant{font-size:clamp(64px,15.5vw,230px);font-weight:900;letter-spacing:-.06em;line-height:.82;color:var(--paper);margin-top:44px}
+.giant .it{font-weight:500;color:var(--accent);letter-spacing:-.03em}
+
+/* ---------- бегущая строка ---------- */
+.marquee{background:var(--lime);color:var(--bord);overflow:hidden;padding:18px 0}
+.marquee-track{display:flex;gap:44px;width:max-content;animation:run 38s linear infinite;font-family:var(--display);font-size:clamp(24px,3.4vw,44px);letter-spacing:-.03em;white-space:nowrap}
+.marquee-track b{font-weight:800}
+.marquee-track span{font-weight:400}
+@keyframes run{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+
+/* ---------- обо мне ---------- */
+.about-grid{display:grid;grid-template-columns:1fr;gap:clamp(32px,5vw,72px);align-items:start}
+.about .sec-title{margin-bottom:28px}
+.about-lead{font-size:clamp(22px,2.6vw,34px);line-height:1.3;max-width:34ch}
+.about-edu{color:var(--muted);margin-top:18px;font-size:15px;max-width:44ch}
+.cv-btn{display:inline-block;margin-top:28px;background:var(--lime);color:var(--bord);text-decoration:none;font-weight:700;padding:14px 24px;border-radius:999px}
+.cv-btn:hover{background:var(--chalk)}
+.duo{position:relative;height:clamp(360px,36vw,470px);margin-top:40px}
+.duo-bg{position:absolute;left:0;right:0;bottom:0;height:70%;background:var(--bord);border-radius:260px 260px 6px 6px}
+.duo img{position:absolute;bottom:0;height:100%;width:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.duo .p1{left:2%;height:96%;z-index:2}
+.duo .p2{right:2%;height:86%;z-index:1}
+.duo-tag{position:absolute;left:50%;top:6%;transform:translateX(-50%) rotate(-6deg);background:var(--lime);color:var(--bord);font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.6vw,20px);padding:6px 16px;border-radius:999px;z-index:3;white-space:nowrap}
+.jobs{list-style:none;border-top:1px solid var(--line)}
+.jobs li{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--line)}
+.jobs .when{font-size:14px;color:var(--lime);padding-top:6px}
+.jobs h3{font-size:clamp(24px,2.4vw,32px);font-weight:700;margin-bottom:8px}
+.jobs p{color:#CDBDBA;font-size:16px}
+.lang{background:none;border:1px solid currentColor;border-radius:999px;padding:4px 14px;color:inherit;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.lang:hover{background:var(--lime);color:var(--bord);border-color:var(--lime)}
+/* ---------- что я делаю ---------- */
+section{padding:clamp(64px,9vw,120px) 0}
+.sec-title{font-size:clamp(44px,7vw,96px);font-weight:800;margin-bottom:48px}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+.skill{padding:28px 24px 32px 0;border-bottom:1px solid var(--line)}
+.skill:not(:nth-child(3n)){border-right:1px solid var(--line);padding-right:24px}
+.skill:not(:nth-child(3n+1)){padding-left:24px}
+.skill .n{font-size:14px;color:var(--accent);font-variant-numeric:tabular-nums}
+.skill h3{font-size:clamp(24px,2.4vw,32px);font-weight:700;margin:14px 0 10px;line-height:1.05}
+.skill p{color:#CDBDBA;font-size:16px}
+.stack{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:56px}
+.stack h4{font-size:15px;font-weight:500;color:var(--muted);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid #5a2a33;border-radius:999px;padding:8px 16px;font-size:15px}
+
+/* ---------- содержание ---------- */
+.toc{background:var(--bord);color:var(--chalk)}
+.toc .sec-title{color:var(--chalk)}
+.toc-list{list-style:none;border-top:2px solid var(--lime)}
+.toc-list a{display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:baseline;padding:22px 0;border-bottom:1px solid #8f3a49;text-decoration:none}
+.toc-list a:hover .t{color:var(--accent)}
+.toc-list .num{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.toc-list .t{font-family:var(--display);font-size:clamp(26px,3.6vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.05;transition:color .2s}
+.toc-list .tag{font-size:14px;color:#E3B9BF;text-align:right}
+.soon{opacity:.45}
+
+/* ---------- кейс 01 (палитра бренда 16 sunrises) ---------- */
+.case{--c-bg:#07090D;--c-panel:#10141C;--c-accent:#2979FF;--c-soft:#B8DCFF;--c-paper:#F4F2ED;background:var(--c-bg);padding-top:0}
+.case-head{background:var(--c-accent);color:#fff;padding:clamp(48px,7vw,96px) 0 clamp(40px,6vw,72px)}
+.case-head .eyebrow{color:var(--c-soft)}
+.case-head h2{font-size:clamp(56px,10vw,150px);font-weight:900;margin:18px 0 22px;letter-spacing:-.05em}
+.case-head p{max-width:60ch;font-size:clamp(17px,1.6vw,21px)}
+.gsr{background:var(--c-paper);color:#07090D;padding:clamp(40px,6vw,72px) 0}
+.gsr-in{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px}
+.gsr .lead{font-size:clamp(32px,4vw,54px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.gsr dl{display:grid;gap:22px;font-size:clamp(17px,1.5vw,20px)}
+.gsr dt{font-weight:800;display:inline}
+.gsr dd{display:inline}
+.gsr .row{border-bottom:1px solid #d3d0c8;padding-bottom:20px}
+.gsr .row:last-child{border:0}
+.stats{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:1px;background:#1d2330;margin-top:clamp(48px,6vw,72px)}
+.stat{background:var(--c-bg);padding:28px 22px}
+.stat b{display:block;font-family:var(--display);font-size:clamp(52px,6vw,88px);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--c-soft);font-variant-numeric:tabular-nums}
+.stat.hl{background:var(--c-accent)}
+.stat.hl b{color:#fff}
+.stat.hl span{color:#dbe8ff}
+.stat span{display:block;margin-top:10px;color:#9aa3b5;font-size:15px}
+.sub{font-size:clamp(30px,3.6vw,48px);font-weight:800;margin:clamp(64px,8vw,104px) 0 28px}
+.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.week{background:var(--c-panel);border-top:4px solid var(--c-accent);padding:22px 20px 26px;border-radius:0 0 4px 4px}
+.week:nth-child(2){border-color:#4DA3FF}
+.week:nth-child(3){border-color:var(--c-soft)}
+.week:nth-child(4){border-color:var(--c-paper)}
+.week small{color:#9aa3b5;font-size:13px;font-variant-numeric:tabular-nums}
+.week h4{font-size:22px;font-weight:700;margin:8px 0 8px;letter-spacing:-.02em;line-height:1.1}
+.week p{font-size:15px;color:#c5ccd9}
+.aida{margin-top:14px;font-size:14px;color:#9aa3b5}
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.post{background:#fff;color:#191919;border-radius:10px;overflow:hidden;font-size:14px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.post:nth-child(2){transform:translateY(-22px)}
+.post-top{display:flex;gap:10px;align-items:center;padding:14px 16px}
+.ava{width:36px;height:36px;border-radius:6px;background:#fff;border:1px solid #e3e3e3;padding:3px;color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+.post-top b{display:block;font-size:14px}
+.post-top small{color:#777;font-size:12px}
+.post-text{padding:0 16px 4px;line-height:1.45;display:grid;gap:9px}
+.post-text.clamp{max-height:6.4em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.post-text .tags{color:#0a66c2}
+.more{background:none;border:0;color:#666;font:inherit;font-size:14px;padding:2px 16px 12px;cursor:pointer;text-align:left}
+.post-pic{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.ava img{width:100%;height:100%;object-fit:contain;border-radius:6px}
+.carousel{position:relative;overflow:hidden;aspect-ratio:4/5;background:#07090D}
+.car-track{display:flex;height:100%;transition:transform .35s ease}
+.car-track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#111;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.car-btn.prev{left:10px}.car-btn.next{right:10px}
+.car-count{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:3px 9px;border-radius:999px;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.car-track{transition:none}}
+.post-img-old{aspect-ratio:1.2/1;background:linear-gradient(150deg,#2979FF,#07090D);display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px;letter-spacing:-.02em;text-align:center;padding:16px}
+.post-bar{display:flex;justify-content:space-between;padding:10px 16px;color:#666;font-size:13px;border-top:1px solid #eee}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.box{background:var(--c-panel);border-radius:4px;padding:28px}
+.box h4{font-size:22px;font-weight:700;margin-bottom:14px;letter-spacing:-.02em}
+.box ul{list-style:none;display:grid;gap:10px;color:#c5ccd9}
+.box li{padding-left:22px;position:relative}
+.box li::before{content:"//";position:absolute;left:0;color:var(--c-accent);font-weight:700;font-size:13px;top:2px}
+.note{margin-top:18px;border:1px dashed #2f3a52;border-radius:4px;padding:20px 22px;color:#c5ccd9}
+.note b{color:var(--c-soft)}
+
+.brand{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sw{background:var(--sw);color:#fff;min-height:130px;border-radius:4px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;border:1px solid #1d2330;font-size:14px}
+.sw b{font-variant-numeric:tabular-nums;font-size:16px}
+.sw span{opacity:.75}
+.sw.light{color:#07090D}
+.type{background:var(--c-paper);color:#07090D;border-radius:4px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;font-family:"Inter",var(--body)}
+.type .aa{font-size:96px;font-weight:700;letter-spacing:-.05em;line-height:.9}
+.type b{font-size:22px}
+.type p{font-size:15px;color:#3b4150;margin-top:6px}
+.phones{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,40px);align-items:start;padding:20px 0}
+.phone{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.phone.mid{transform:translateY(-28px)}
+.phone .screen{position:relative;width:100%;max-width:300px;aspect-ratio:9/16.6;background:#fff;border:10px solid #1b1d22;border-radius:42px;overflow:hidden;box-shadow:0 0 0 2px #3a3f4a,0 30px 60px rgba(0,0,0,.5)}
+.phone .screen::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:34%;height:22px;background:#1b1d22;border-radius:999px;z-index:2}
+.phone .screen img{display:block;width:100%;height:auto;margin-top:34px}
+.phone figcaption{font-size:14px;color:#9aa3b5}
+.quote{margin-top:clamp(48px,6vw,80px);background:var(--c-accent);color:#fff;border-radius:4px;padding:clamp(28px,4vw,56px);position:relative}
+.quote::before{content:"“";position:absolute;top:-30px;left:24px;font-family:var(--serif);font-size:140px;line-height:1;color:var(--c-soft)}
+.quote p{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.6vw,34px);line-height:1.3;max-width:40ch;letter-spacing:-.01em}
+.quote footer{margin-top:20px;font-size:15px;font-weight:700;color:#dbe8ff}
+/* ---------- кейс 02 ---------- */
+.case3{--c-bg:#1E1208;--c-panel:#2B1A0D;--c-accent:#D9822B;--c-soft:#F6C98A;--c-paper:#F4EBDD;background:var(--c-bg)}
+.case3 .case-head{background:#8A4B16}
+.case3 .case-head .eyebrow{color:var(--c-soft)}
+.case3 .week:nth-child(2){border-color:#E9A55A}
+.case3 .week:nth-child(3){border-color:var(--c-soft)}
+.case3 .stat b{color:var(--c-soft);font-size:clamp(40px,4.4vw,68px)}
+.case3 .stat span,.case3 .week small,.case3 .week p{color:#e0cdb6}
+.case3 .stat.hl b{color:#fff}
+.case3 .stat.hl span{color:#fff0e0}
+.case3 .stats{background:#3a2513;grid-template-columns:repeat(3,1fr)}
+.chan{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.chan a,.chan div{display:block;background:var(--c-panel);border-top:4px solid var(--c-accent);padding:20px;text-decoration:none;color:#fff;border-radius:0 0 4px 4px}
+.chan b{display:block;font-size:22px;letter-spacing:-.02em}
+.chan span{display:block;margin-top:6px;color:#e0cdb6;font-size:15px}
+.chan a:hover{background:#3a2513}
+.ytrow{display:grid;grid-template-columns:2.2fr 1fr;gap:24px;align-items:center}
+.igrow .gfacts{grid-template-columns:repeat(5,1fr)}
+.igrow .phones{grid-template-columns:repeat(4,1fr)!important;gap:16px}
+.ytrow .phones{grid-template-columns:repeat(3,1fr);padding:0}
+.ytrow:not(.igrow) .phones{grid-template-columns:1fr;justify-items:center}
+.ytrow .phone .screen{display:block;aspect-ratio:auto!important;height:auto;max-width:260px;padding-top:34px;background:#0f0f0f}
+.ytrow .phone .screen img{margin-top:0}
+.growth{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:stretch}
+.gchart{margin:0;background:#fff;border-radius:8px;padding:14px}
+.gchart a{display:block}
+.gchart img{display:block;width:100%;height:auto}
+.gchart figcaption{margin-top:10px;font-size:13px;color:#5b4a3a}
+.gfacts{display:grid;gap:1px;background:#3a2513}
+.gfacts div{background:var(--c-panel);padding:20px}
+.gfacts b{display:block;font-size:clamp(30px,3vw,44px);font-weight:900;letter-spacing:-.04em;color:var(--c-soft);line-height:1}
+.gfacts span{display:block;margin-top:6px;color:#e0cdb6;font-size:15px}
+.grp{margin-top:clamp(72px,9vw,120px);display:inline-block;background:var(--c-accent);color:#fff;font-weight:800;font-size:clamp(20px,2vw,26px);padding:8px 22px;border-radius:999px;letter-spacing:-.01em}
+.grp+.sub{margin-top:24px}
+.tlrow{display:flex;align-items:center;gap:10px;overflow-x:auto;padding:6px 2px 18px;scroll-snap-type:x mandatory}
+.tl{margin:0;flex:0 0 200px;scroll-snap-align:start}
+.tl a{display:block;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.tl img{display:block;width:100%;height:auto}
+.tl figcaption{margin-top:10px;color:#e0cdb6;font-size:14px;min-height:40px}
+.tl figcaption b{display:block;font-size:26px;font-weight:900;color:var(--c-soft);letter-spacing:-.03em}
+.tlrow .arr{flex:0 0 auto;color:var(--c-accent);font-size:26px;font-weight:800;margin-bottom:40px}
+.igrow{grid-template-columns:1fr!important}
+.igrow .phones{grid-template-columns:repeat(5,1fr)!important;gap:14px}
+.igrow .gfacts{grid-template-columns:repeat(5,1fr)}
+.sy-row{display:grid;grid-template-columns:300px 1fr;gap:clamp(24px,4vw,56px);align-items:start;margin-top:clamp(48px,6vw,80px)}
+.sy-row .phone .screen{display:block;aspect-ratio:auto!important;height:auto;max-width:300px;padding-top:34px;background:#0c0f14}
+.sy-row .phone .screen img{margin-top:0;height:auto}
+.sy-row .sub{margin-top:0}
+.case2 .sy-row .funnel.two{grid-template-columns:1fr 1fr}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.shot{margin:0}
+.shot a{display:block;text-decoration:none;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.4);transition:transform .3s}
+.shot a:hover{transform:translateY(-4px)}
+.shot .bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#2b2b2e}
+.shot .bar i{width:9px;height:9px;border-radius:50%;background:#ff5f57}
+.shot .bar i:nth-child(2){background:#febc2e}.shot .bar i:nth-child(3){background:#28c840}
+.shot .bar span{margin-left:8px;font-size:12px;color:#cfcfd2;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top}
+.shot figcaption{margin-top:12px;font-size:15px;color:#e0cdb6}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:24px;z-index:100;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;border-radius:6px}
+.case2{--c-bg:#0C2A2B;--c-panel:#123A3B;--c-accent:#FF7A59;--c-soft:#FFD3B8;--c-paper:#F3E7D3;background:var(--c-bg)}
+.case2 .case-head{background:#0F4C4D}
+.case2 .case-head .eyebrow{color:var(--c-soft)}
+.case2 .week:nth-child(2){border-color:#FFB38A}
+.case2 .week:nth-child(3){border-color:var(--c-soft)}
+.case2 .stat b{color:var(--c-soft)}
+.case2 .stat span,.case2 .week small,.case2 .week p,.case2 .box li{color:#c9dcda}
+.case2 .stat.hl b{color:#fff}
+.case2 .stat.hl span{color:#ffe7dc}
+.case2 .stats{background:#1d4445}
+.ig{display:inline-block;margin-top:18px;color:#fff;font-weight:700;text-decoration:none;border-bottom:2px solid var(--c-soft)}
+.funnel.three{grid-template-columns:repeat(3,1fr)}
+.case2 .funnel:not(.three){grid-template-columns:repeat(3,1fr)}
+.pillars{display:grid;grid-template-columns:4fr 3.5fr 2.5fr;gap:12px}
+.pillar{border-radius:4px;padding:24px;color:#0C2A2B}
+.pillar.p1{background:var(--c-accent)}.pillar.p2{background:#FFB38A}.pillar.p3{background:var(--c-paper)}
+.pillar b{font-family:var(--display);font-size:clamp(44px,5vw,72px);font-weight:900;letter-spacing:-.05em;line-height:1}
+.pillar h4{font-size:20px;margin:10px 0 6px;letter-spacing:-.02em}
+.pillar p{font-size:15px}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.box .tag{display:inline-block;font-size:12px;font-weight:700;background:var(--c-accent);color:#0C2A2B;padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.plan-wrap{overflow-x:auto;margin-top:8px}
+.plan{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+.plan th{text-align:left;font-size:13px;font-weight:500;color:var(--c-soft);padding:10px 12px;border-bottom:2px solid var(--c-accent)}
+.plan td{padding:11px 12px;border-bottom:1px solid #24504f;color:#e3eeec}
+.plan td.d{font-variant-numeric:tabular-nums;color:var(--c-soft);width:56px}
+.plan td.g{color:#9fc0bd}
+.case2 .quote{background:var(--c-accent);color:#0C2A2B}
+.case2 .quote::before{color:#fff}
+.case2 .quote footer{color:#4a2418}
+/* ---------- AI-визуал ---------- */
+.ai{background:var(--bord)}
+.ai .sec-title{color:var(--chalk)}
+.ai .sec-title .it{color:var(--lime)}
+.ai-lead{max-width:56ch;color:#F0D9DC;font-size:clamp(17px,1.6vw,20px);margin:-24px 0 40px}
+.mosaic{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(150px,19vw,250px);grid-auto-flow:dense;gap:6px}
+.mosaic figure{position:relative;margin:0;overflow:hidden;background:#2a0710}
+.mosaic img,.mosaic video{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.mosaic figure:hover img,.mosaic figure:hover video{transform:scale(1.04)}
+.mosaic .w2{grid-column:span 2}.mosaic .h2{grid-row:span 2}
+.mosaic figcaption{position:absolute;right:10px;top:10px;background:var(--lime);color:var(--bord);font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.ig-btn{display:inline-flex;gap:8px;align-items:center;background:var(--lime);color:var(--bord);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px}
+.ig-btn:hover{background:var(--chalk)}
+@media (prefers-reduced-motion:reduce){.mosaic img,.mosaic video{transition:none}}
+.ai-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:28px}
+.ai-tools .chip{border-color:#b6505f;color:var(--chalk)}
+/* ---------- будущие кейсы ---------- */
+.next{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.next-card{min-height:280px;border-radius:4px;padding:28px;display:flex;flex-direction:column;justify-content:space-between}
+.next-card:nth-child(1){background:var(--lime);color:var(--bord)}
+.next-card:nth-child(2){background:var(--bord);color:var(--lime)}
+.next.one{grid-template-columns:1fr}
+.next-card h3{font-size:clamp(36px,4.6vw,64px);font-weight:900}
+.next-card p{max-width:40ch}
+
+/* ---------- подход ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);row-gap:40px;gap:24px;counter-reset:s}
+.step{border-top:1px solid var(--chalk);padding-top:18px}
+.step b{font-size:14px;color:var(--accent);font-variant-numeric:tabular-nums}
+.step h3{font-size:30px;font-weight:700;margin:10px 0}
+.step p{color:#CDBDBA;font-size:16px}
+.step .dur{float:right;font-size:13px;font-weight:700;color:var(--bord);background:var(--lime);padding:2px 10px;border-radius:999px}
+.format{margin-top:clamp(56px,7vw,88px);border:1px solid var(--line);border-radius:4px;padding:clamp(24px,3vw,40px)}
+.fmt-title{font-size:clamp(28px,3vw,40px);font-weight:800;margin-bottom:24px}
+.fmt{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fmt dt{font-size:14px;color:var(--lime);margin-bottom:6px}
+.fmt dd{margin:0;font-size:17px}
+
+/* ---------- контакты ---------- */
+.foot{background:var(--lime);color:var(--ink)}
+.foot-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+.end-photo{width:clamp(220px,28vw,380px);aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;border-radius:4px}
+.open{margin-top:24px;font-size:clamp(18px,1.8vw,22px);max-width:50ch}
+.foot h2{font-size:clamp(56px,10vw,150px);font-weight:900;letter-spacing:-.05em}
+.foot h2 .it{color:var(--bord);font-weight:500}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}
+.links a{display:block;text-decoration:none;border:2px solid var(--ink);border-radius:999px;padding:18px 24px;font-size:18px;font-weight:700;transition:.2s}
+.links a span{display:block;font-weight:400;font-size:14px;color:#4a3a2c}
+.links a:hover{background:var(--bord);color:var(--lime);border-color:var(--bord)}
+.links a:hover span{color:#f0d9dc}
+.copy{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;font-size:14px;color:#4a3a2c}
+.lang{background:none;border:1px solid currentColor;border-radius:999px;padding:4px 12px;color:inherit;font:inherit;cursor:pointer}
+
+/* ---------- адаптив ---------- */
+@media (max-width:900px){
+  .about-grid,.hero-grid,.gsr-in,.stack,.cols,.next{grid-template-columns:1fr}
+  .skills{grid-template-columns:1fr 1fr}
+  .skill,.skill:not(:nth-child(3n)),.skill:not(:nth-child(3n+1)){border-right:0;padding:24px 0}
+  .stats,.funnel,.steps,.fmt,.chan{grid-template-columns:1fr 1fr}
+  .sy-row{grid-template-columns:1fr}
+  .shots,.growth,.ytrow{grid-template-columns:1fr}
+  .igrow .phones{grid-template-columns:1fr 1fr!important}
+  .tl{flex-basis:220px}
+  .igrow .gfacts{grid-template-columns:1fr 1fr}
+  .posts{grid-template-columns:1fr}
+  .pillars,.cols3,.funnel.three,.case2 .funnel:not(.three){grid-template-columns:1fr}
+  .brand{grid-template-columns:1fr}
+  .mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:42vw}
+  .stats{grid-template-columns:1fr 1fr}
+  .post:nth-child(2){transform:none}
+  .phones{grid-template-columns:1fr}
+  .phone.mid{transform:none}
+  .links{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .end-photo{width:100%;max-width:360px}
+}
+@media (max-width:520px){
+  .skills,.stats,.funnel,.steps,.fmt,.chan{grid-template-columns:1fr}
+  .swatches{grid-template-columns:1fr 1fr}
+  .toc-list a{grid-template-columns:44px 1fr}
+  .jobs li{grid-template-columns:1fr;gap:6px}
+  .toc-list .tag{display:none}
+}
+
+/* путь клиента + макет директа */
+.cj-row{display:grid;grid-template-columns:minmax(0,500px) 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.cj-steps{display:flex;flex-direction:column;gap:12px}
+.cj-step{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;background:var(--c-panel);border-left:4px solid var(--c-accent);padding:18px 20px;border-radius:0 4px 4px 0;position:relative}
+.cj-step:nth-child(2){border-color:#FFB38A}.cj-step:nth-child(3){border-color:var(--c-soft)}.cj-step:nth-child(4){border-color:var(--c-paper)}
+.cj-step b{font-size:34px;font-weight:800;line-height:1;color:var(--c-soft);letter-spacing:-.03em}
+.cj-step h4{font-size:20px;font-weight:700;margin:0 0 4px}
+.cj-step p{font-size:15px;color:#c5ccd9;margin:0}
+.cj-step:not(:last-child)::after{content:"↓";position:absolute;left:30px;bottom:-15px;color:var(--c-soft);font-size:16px;z-index:1}
+.cj-shots{margin:0;display:flex;flex-direction:column;gap:14px}
+.cj-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dm-shot{display:block;border:8px solid #1b1d22;border-radius:30px;overflow:hidden;box-shadow:0 0 0 2px #3a3f4a,0 24px 48px rgba(0,0,0,.45);background:#0c0f14}
+.dm-shot img{display:block;width:100%;height:auto}
+.cj-row figcaption{font-size:14px;color:#9aa3b5;text-align:center}
+@media (max-width:820px){.cj-row{grid-template-columns:1fr}}
+
+/* примеры постов в телефонах */
+.posts-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(24px,5vw,72px)}
+.post-ph{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px;width:300px;max-width:100%}
+.post-ph .tag{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--c-soft);font-weight:700}
+.ph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0c0f14;border:10px solid #1b1d22;border-radius:44px;overflow:hidden;box-shadow:0 0 0 2px #3a3f4a,0 30px 60px rgba(0,0,0,.5)}
+.ph-frame::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:34%;height:22px;background:#1b1d22;border-radius:999px;z-index:3}
+.ph-frame::after{content:"";position:absolute;left:0;right:0;top:0;height:38px;background:#0c0f14;z-index:2}
+.ph-scroll{position:absolute;inset:38px 0 0 0;overflow-y:auto;scrollbar-width:none;overscroll-behavior:contain}
+.ph-scroll::-webkit-scrollbar{display:none}
+.ph-scroll img{display:block;width:100%;height:auto}
+.ph-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:3;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:5px 10px;border-radius:999px;pointer-events:none;transition:opacity .3s;white-space:nowrap}
+.ph-frame.scrolled .ph-hint{opacity:0}
+.post-ph figcaption{font-size:14px;color:#9aa3b5;text-align:center}
+
+.marquee.alt{background:var(--bord);color:var(--lime)}
+
+/* ---------- адаптив: планшеты и телефоны ---------- */
+#approach{padding-top:clamp(56px,7vw,96px)!important}
+@media (min-width:521px) and (max-width:900px){.mosaic{grid-template-columns:repeat(3,1fr);grid-auto-rows:30vw}}
+@media (max-width:900px){
+  .case3 .stats,.case2 .stats{grid-template-columns:1fr 1fr}
+  .case3 .stat:first-child{grid-column:1/-1}
+  .posts-row{gap:28px}
+}
+@media (max-width:640px){
+  .top{gap:12px}
+  .top nav{order:3;width:100%;flex-wrap:nowrap;overflow-x:auto;gap:18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .top nav::-webkit-scrollbar{display:none}
+  .top nav a{white-space:nowrap}
+}
+@media (max-width:520px){
+  .case3 .stats,.case2 .stats{grid-template-columns:1fr}
+  .stat b,.case3 .stat b{font-size:clamp(40px,12vw,56px)}
+  .stat{padding:22px 18px}
+  .cj-step{grid-template-columns:44px 1fr;padding:16px}
+  .cj-step b{font-size:28px}
+  .post-ph{width:min(300px,86vw)}
+  .marquee-track{font-size:22px;gap:28px}
+  .case2 .sy-row .funnel.two{grid-template-columns:1fr}
+}
+.sy-row>*{min-width:0}
+.sy-row .phone{max-width:100%}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <b data-i18n="name">Валерия Манжосова</b>
+  <nav>
+    <a href="#about" data-i18n="nav_about">Обо мне</a>
+    <a href="#work" data-i18n="nav_work">Кейсы</a>
+    <a href="#ai" data-i18n="nav_ai">AI-визуал</a>
+    <a href="#approach" data-i18n="nav_approach">Подход</a>
+    <a href="#contact" data-i18n="nav_contact">Контакты</a>
+  </nav>
+  <span class="top-r"><span data-i18n="year">Портфолио · 2026</span> <button class="lang" id="lang" type="button" aria-label="Switch language">EN</button></span>
+</header>
+
+<!-- ОБЛОЖКА -->
+<div class="wrap hero">
+  <div class="slashes" aria-hidden="true">//////////////////////////////////////////////////////////////</div>
+  <div class="hero-grid">
+    <div>
+      <p class="role"><span data-i18n="role_a">// SMM-менеджер</span><br><span class="it" data-i18n="role_b">стратегия и контент</span></p>
+      <p class="hero-intro" data-i18n="intro">С характером. С результатом.</p>
+      <div class="contacts">
+        <div><span data-i18n="c_mail">Email</span> valerii.mhz@gmail.com</div>
+        <div><span data-i18n="c_tg">Telegram</span> <a href="https://t.me/valeriimhz">@valeriimhz</a></div>
+        <div><span data-i18n="c_li">LinkedIn</span> <a href="https://www.linkedin.com/in/valeriia-manzhosova-87b906438/" data-i18n="name3">Валерия Манжосова</a></div>
+      </div>
+    </div>
+    <figure class="hero-photo"><img src="img/hero3.jpg" alt="Валерия Манжосова"></figure>
+  </div>
+  <h1 class="giant"><span data-i18n="giant_a">SMM</span><br><span class="it" data-i18n="giant_b">портфолио</span></h1>
+</div>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+    <b>✦</b><span data-i18n="mq">стратегия · контент · аналитика ·</span>
+  </div>
+</div>
+
+<!-- ОБО МНЕ -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div>
+      <h2 class="sec-title"><span data-i18n="ab_a">Обо</span> <span class="it" data-i18n="ab_b">мне</span></h2>
+      <p class="about-lead" data-i18n="ab_lead">3+ года в SMM. Работаю с финтехом и туризмом, с B2B и B2C. Живу в Таиланде, работаю удалённо.</p>
+      <p class="about-edu" data-i18n="ab_edu">Кубанский государственный университет, «Конгрессно-выставочный сервис», 2020-2024.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ЧТО Я ДЕЛАЮ -->
+<section>
+  <div class="wrap">
+    <h2 class="sec-title"><span data-i18n="do_a">Что я</span> <span class="it" data-i18n="do_b">делаю?</span></h2>
+    <div class="skills">
+      <div class="skill"><span class="n">01</span><h3 data-i18n="s1_t">SMM-стратегия</h3><p data-i18n="s1_d">Аудит, позиционирование, цели и воронка: что, кому и зачем мы говорим.</p></div>
+      <div class="skill"><span class="n">02</span><h3 data-i18n="s2_t">Контент-план</h3><p data-i18n="s2_d">Рубрики, частота, форматы и календарь публикаций на месяц вперёд.</p></div>
+      <div class="skill"><span class="n">03</span><h3 data-i18n="s3_t">Тексты и копирайтинг</h3><p data-i18n="s3_d">Посты, заголовки и призывы к действию на русском и английском.</p></div>
+      <div class="skill"><span class="n">04</span><h3 data-i18n="s4_t">ТЗ на визуал и видео</h3><p data-i18n="s4_d">Брифы для дизайнера, контент-мейкера и монтажёра: карусели, обложки, съёмка и видео в стиле бренда.</p></div>
+      <div class="skill"><span class="n">05</span><h3 data-i18n="s5_t">B2B и LinkedIn</h3><p data-i18n="s5_d">Продвижение сложных продуктов для бизнеса без пустых обещаний.</p></div>
+      <div class="skill"><span class="n">06</span><h3 data-i18n="s6_t">Аналитика</h3><p data-i18n="s6_d">Охваты, вовлечённость, заявки: смотрю на цифры и корректирую план.</p></div>
+    </div>
+    <div class="stack">
+      <div>
+        <h4 data-i18n="platforms">Платформы</h4>
+        <div class="chips"><span class="chip">Instagram</span><span class="chip">YouTube</span><span class="chip">LinkedIn</span><span class="chip">Telegram</span></div>
+      </div>
+      <div>
+        <h4 data-i18n="tools">Инструменты</h4>
+        <div class="chips"><span class="chip">Canva</span><span class="chip">Figma</span><span class="chip">Notion</span><span class="chip">Google Sheets</span><span class="chip">Claude</span><span class="chip">ChatGPT</span><span class="chip">Midjourney</span><span class="chip">Higgsfield</span><span class="chip">Kling</span><span class="chip">CapCut</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- СОДЕРЖАНИЕ -->
+<section class="toc" id="work">
+  <div class="wrap">
+    <h2 class="sec-title" data-i18n="toc">Кейсы</h2>
+    <ol class="toc-list">
+      <li><a href="#case-01"><span class="num">01.</span><span class="t">16 sunrises</span><span class="tag" data-i18n="toc1_tag">LinkedIn · B2B · AI для банков</span></a></li>
+      <li><a href="#case-02"><span class="num">02.</span><span class="t">Shadows of Africa</span><span class="tag" data-i18n="toc3_tag">YouTube · Instagram · B2B/B2C · туризм</span></a></li>
+      <li><a href="#case-03"><span class="num">03.</span><span class="t">Sayama Travel</span><span class="tag" data-i18n="toc2_tag">Instagram · B2B/B2C · туризм</span></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- КЕЙС 01 -->
+<section class="case" id="case-01">
+  <div class="case-head">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="c1_eyebrow">01. Кейс · LinkedIn</p>
+      <h2>16 sunrises</h2>
+      <p data-i18n="c1_intro">SMM-стратегия и контент-план на 30 дней для корпоративной страницы LinkedIn. Продукт - Knowledge Base, AI-ассистент по базе знаний для банков. Аудитория - англоязычный банковский рынок.</p>
+    </div>
+  </div>
+
+  <div class="gsr">
+    <div>
+      <div class="wrap gsr-in">
+        <p class="lead" data-i18n="c1_lead">Технологичный B2B-продукт, который нужно объяснить банкам</p>
+        <dl>
+          <div class="row"><dt data-i18n="goal">Цель:</dt> <dd data-i18n="c1_goal">узнаваемость продукта и запросы на демо.</dd></div>
+          <div class="row"><dt data-i18n="strategy">Стратегия:</dt> <dd data-i18n="c1_strategy">месяц разбит на четыре этапа воронки AIDA, каждый пост решает свою задачу. Говорим только о подтверждённых фактах: без выдуманных клиентов, цифр и сертификатов.</dd></div>
+          <div class="row"><dt data-i18n="result">Результат:</dt> <dd data-i18n="c1_result">200-300 просмотров у каждого поста и первые комментарии на новой странице компании, которая только начала набирать аудиторию. Плюс готовая стратегия, контент-план и 18 постов с ТЗ на визуал.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat hl"><b>200-300</b><span data-i18n="st0">просмотров на пост у новой страницы</span></div>
+      <div class="stat"><b>18</b><span data-i18n="st2">постов на английском</span></div>
+      <div class="stat"><b>30</b><span data-i18n="st1">дней в контент-плане</span></div>
+      <div class="stat"><b>4</b><span data-i18n="st4">этапа воронки</span></div>
+    </div>
+
+    <h3 class="sub" data-i18n="c1_funnel">Месяц как воронка</h3>
+    <div class="funnel">
+      <div class="week"><small data-i18n="w1_n">Неделя 1</small><h4>Awareness</h4><p data-i18n="w1">Знакомим рынок с проблемой и продуктом.</p></div>
+      <div class="week"><small data-i18n="w2_n">Неделя 2</small><h4>Product Education</h4><p data-i18n="w2">Объясняем, как работает Knowledge Base.</p></div>
+      <div class="week"><small data-i18n="w3_n">Неделя 3</small><h4>Trust, Security, Value</h4><p data-i18n="w3">Снимаем главные страхи банков: безопасность и ценность.</p></div>
+      <div class="week"><small data-i18n="w4_n">Неделя 4</small><h4>Consideration</h4><p data-i18n="w4">Подводим к запросу демо.</p></div>
+    </div>
+    <p class="aida" data-i18n="aida">Схема AIDA работает на двух уровнях: на весь месяц и внутри каждого поста.</p>
+
+    <h3 class="sub" data-i18n="c1_posts">Опубликовано в LinkedIn</h3>
+    <div class="phones">
+      <figure class="phone"><div class="screen"><img src="img/li-3.jpg" alt="Пост-карусель 16 Sunrises в LinkedIn"></div><figcaption data-i18n="ph3">Карусель · 5 слайдов</figcaption></figure>
+      <figure class="phone mid"><div class="screen"><img src="img/li-1.jpg" alt="Пост 16 Sunrises в LinkedIn: The rule exists"></div><figcaption data-i18n="ph1">Пост · Knowledge Base</figcaption></figure>
+      <figure class="phone"><div class="screen"><img src="img/li-2.jpg" alt="Пост 16 Sunrises в LinkedIn: Your data. Your perimeter."></div><figcaption data-i18n="ph2">Пост · On-premises AI</figcaption></figure>
+    </div>
+    <p class="aida" data-i18n="posts_note">Скриншоты страницы компании в LinkedIn: тексты постов и визуалы - мои.</p>
+
+    <h3 class="sub" data-i18n="c1_brand">Визуальный стиль бренда</h3>
+    <div class="brand">
+      <div class="swatches">
+        <div class="sw" style="--sw:#07090D"><b>#07090D</b><span data-i18n="sw1">Основной тёмный</span></div>
+        <div class="sw" style="--sw:#10141C"><b>#10141C</b><span data-i18n="sw2">Тёмный фон</span></div>
+        <div class="sw" style="--sw:#2979FF"><b>#2979FF</b><span data-i18n="sw3">Акцент</span></div>
+        <div class="sw" style="--sw:#4DA3FF"><b>#4DA3FF</b><span data-i18n="sw4">Голубой</span></div>
+        <div class="sw light" style="--sw:#B8DCFF"><b>#B8DCFF</b><span data-i18n="sw5">Светло-голубой</span></div>
+        <div class="sw light" style="--sw:#F4F2ED"><b>#F4F2ED</b><span data-i18n="sw6">Светлый фон</span></div>
+      </div>
+      <div class="type">
+        <span class="aa">Aa</span>
+        <div><b>Inter</b><p data-i18n="type_d">Единственный шрифт бренда. Светлые и тёмные слайды чередуются, логотип только официальный.</p></div>
+      </div>
+    </div>
+
+    <div class="cols" style="grid-template-columns:1fr;margin-top:32px">
+      <div class="box">
+        <h4 data-i18n="del_t">Что я сделала</h4>
+        <ul>
+          <li data-i18n="del1">Презентация стратегии на 25-35 слайдов.</li>
+          <li data-i18n="del2">Контент-план на 30 дней в таблице.</li>
+          <li data-i18n="del3">18 готовых постов на английском с ТЗ на визуал.</li>
+          <li data-i18n="del4">Визуальный стиль постов в палитре бренда.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note"><span data-i18n="next_d">Кампания продолжается.</span></p>
+  </div>
+</section>
+
+<!-- КЕЙС 02 · SHADOWS OF AFRICA -->
+<section class="case case3" id="case-02">
+  <div class="case-head">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="k3_eyebrow">02. Кейс · YouTube · Instagram · e-mail</p>
+      <h2>Shadows of Africa</h2>
+      <p data-i18n="k3_intro">Туроператор, который организует сафари и путешествия по Африке. Три года я отвечала за весь контент компании: от стратегии коммуникации до постов, видео, рассылок и лендингов, и руководила командой из монтажёра, дизайнера и копирайтера.</p>
+      <a class="ig" href="https://www.shadowsofafrica.com/" target="_blank" rel="noopener">shadowsofafrica.com ↗</a>
+    </div>
+  </div>
+
+  <div class="gsr">
+    <div>
+      <div class="wrap gsr-in">
+        <p class="lead" data-i18n="k3_lead">Весь контент бренда в одних руках: от стратегии до команды</p>
+        <dl>
+          <div class="row"><dt data-i18n="goal">Цель:</dt> <dd data-i18n="k3_goal">выстроить узнаваемый бренд в соцсетях и привести аудиторию к турам.</dd></div>
+          <div class="row"><dt data-i18n="strategy">Стратегия:</dt> <dd data-i18n="k3_strategy">полная стратегия коммуникации компании, ставка на видео (YouTube и Reels), отдельные рассылки для B2B и B2C, лендинги под туры и направления.</dd></div>
+          <div class="row"><dt data-i18n="result">Результат:</dt> <dd data-i18n="k3_result">YouTube-канал с нуля до 29 100 подписчиков, рост Instagram на 10 000+ подписчиков за счёт Reels и работающая контент-команда из трёх человек.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat hl"><b>0 → 29.1K</b><span data-i18n="k3_st1">подписчиков на YouTube</span></div>
+      <div class="stat"><b>+10K</b><span data-i18n="k3_st2">подписчиков в Instagram за счёт Reels</span></div>
+      <div class="stat"><b>3</b><span data-i18n="k3_st3">человека в команде под моим руководством</span></div>
+    </div>
+
+    <h3 class="sub" data-i18n="k3_did">Что я делала</h3>
+    <div class="funnel">
+      <div class="week"><small data-i18n="k3_d1n">Стратегия</small><h4 data-i18n="k3_d1t">Коммуникация бренда</h4><p data-i18n="k3_d1">Полная стратегия коммуникации компании: площадки, голос бренда, рубрики и форматы.</p></div>
+      <div class="week"><small data-i18n="k3_d2n">Контент</small><h4 data-i18n="k3_d2t">Все соцсети</h4><p data-i18n="k3_d2">Создание всего контента: посты во всех соцсетях, Reels, видео для YouTube, наполнение блога на сайте.</p></div>
+      <div class="week"><small data-i18n="k3_d3n">E-mail</small><h4 data-i18n="k3_d3t">B2B и B2C рассылки</h4><p data-i18n="k3_d3">Рассылка для агентств-партнёров и отдельная рассылка для существующих клиентов.</p></div>
+      <div class="week"><small data-i18n="k3_d4n">Команда</small><h4 data-i18n="k3_d4t">Монтажёр, дизайнер, копирайтер</h4><p data-i18n="k3_d4">Ставила задачи, проверяла работу и держала единый стиль контента. Плюс лендинги под отдельные туры и направления.</p></div>
+    </div>
+
+    <h3 class="sub" data-i18n="k3_ch">Площадки</h3>
+    <div class="chan">
+      <a href="https://www.youtube.com/@Shadows-of-Africa" target="_blank" rel="noopener"><b>YouTube</b><span data-i18n="k3_c1">с 0 до 29 100 подписчиков</span></a>
+      <a href="https://www.instagram.com/shadowsofafrica/" target="_blank" rel="noopener"><b>Instagram</b><span data-i18n="k3_c2">+10 000 подписчиков на Reels</span></a>
+      <a href="https://www.shadowsofafrica.com/" target="_blank" rel="noopener"><b data-i18n="k3_c3t">Сайт и блог</b><span data-i18n="k3_c3">статьи и лендинги под туры</span></a>
+      <a href="https://www.facebook.com/ShadowsOfAfrica/" target="_blank" rel="noopener"><b>Facebook</b><span data-i18n="k3_c4">посты и продвижение</span></a>
+    </div>
+    <p class="grp" data-i18n="k3_grp_yt">YouTube</p>
+    <h3 class="sub" data-i18n="k3_gr">Статистика YouTube Studio</h3>
+    <div class="growth">
+      <figure class="gchart"><a href="img/soa-studio.jpg" class="zoom"><img src="img/soa-studio.jpg" alt="YouTube Studio Shadows of Africa за всё время: 10,7 млн просмотров, 85,6 тыс. часов просмотра, +29 тыс. подписчиков" loading="lazy"></a><figcaption data-i18n="k3_gr_cap">YouTube Studio, данные за всё время: 10,7 млн просмотров, 85,6K часов просмотра, +29K подписчиков.</figcaption></figure>
+      <div class="gfacts">
+        <div><b>+29K</b><span data-i18n="k3_g1">подписчиков за всё время канала</span></div>
+        <div><b>85,6K</b><span data-i18n="k3_g2">часов просмотра</span></div>
+        <div><b>10,7 млн</b><span data-i18n="k3_g3">просмотров у канала за всё время</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub" data-i18n="k3_top">Самые популярные Shorts канала</h3>
+    <div class="ytrow">
+      <div class="phones">
+        <figure class="phone"><a href="img/soa-yt-2023.jpg" class="zoom screen"><img src="img/soa-yt-2023.jpg" alt="Shadows of Africa в YouTube Studio в процессе работы: 20 тыс. подписчиков, 472 видео"></a><figcaption data-i18n="k3_ph3">В процессе работы: 20K подписчиков</figcaption></figure>
+      </div>
+      <div class="gfacts">
+        <div><b>3,4 млн</b><span data-i18n="k3_t1">просмотров у самого популярного Shorts</span></div>
+        <div><b>1,6 млн</b><span data-i18n="k3_t2">у второго</span></div>
+        <div><b>552K</b><span data-i18n="k3_t3">у третьего</span></div>
+      </div>
+    </div>
+
+    <p class="grp" data-i18n="k3_grp_ig">Instagram</p>
+    <h3 class="sub" data-i18n="k3_ig">Рост подписчиков</h3>
+    <div class="tlrow">
+      <figure class="tl"><a href="img/tl-253.jpg" class="zoom"><img src="img/tl-253.jpg" alt="Профиль Shadows of Africa: 25,3K подписчиков" loading="lazy"></a><figcaption><b>25,3K</b></figcaption></figure><span class='arr'>→</span><figure class="tl"><a href="img/tl-261.jpg" class="zoom"><img src="img/tl-261.jpg" alt="Профиль Shadows of Africa: 26,1K подписчиков" loading="lazy"></a><figcaption><b>26,1K</b><span data-i18n="k3_tl1">54K охвата за 30 дней</span></figcaption></figure><span class='arr'>→</span><figure class="tl"><a href="img/tl-272.jpg" class="zoom"><img src="img/tl-272.jpg" alt="Профиль Shadows of Africa: 27,2K подписчиков" loading="lazy"></a><figcaption><b>27,2K</b><span data-i18n="k3_tl2">201K охвата за 30 дней</span></figcaption></figure><span class='arr'>→</span><figure class="tl"><a href="img/tl-282.jpg" class="zoom"><img src="img/tl-282.jpg" alt="Профиль Shadows of Africa: 28,2K подписчиков" loading="lazy"></a><figcaption><b>28,2K</b><span data-i18n="k3_tl3">472K охвата за 30 дней</span></figcaption></figure><span class='arr'>→</span><figure class="tl"><a href="img/tl-285.jpg" class="zoom"><img src="img/tl-285.jpg" alt="Профиль Shadows of Africa: 28,5K подписчиков" loading="lazy"></a><figcaption><b>28,5K</b></figcaption></figure><span class='arr'>→</span><figure class="tl"><a href="img/tl-30.jpg" class="zoom"><img src="img/tl-30.jpg" alt="Профиль Shadows of Africa: 30K подписчиков" loading="lazy"></a><figcaption><b>30K</b><span data-i18n="k3_tl5">2,2 млн просмотров за 30 дней</span></figcaption></figure>
+    </div>
+
+    <h3 class="sub" data-i18n="k3_ig2">Reels и охваты</h3>
+    <div class="ytrow igrow">
+      <div class="phones">
+        <figure class="phone"><a href="img/ig-views.jpg" class="zoom screen"><img src="img/ig-views.jpg" alt="Instagram Insights: 2 566 803 просмотра за 30 дней, 1 267 795 аккаунтов охвата" loading="lazy"></a><figcaption data-i18n="k3_p1">Insights: 2,57 млн просмотров за 30 дней</figcaption></figure>
+        <figure class="phone"><a href="img/soa-ig-reel.jpg" class="zoom screen"><img src="img/soa-ig-reel.jpg" alt="Статистика Reels: 1 000 351 просмотр в Instagram и Facebook" loading="lazy"></a><figcaption data-i18n="k3_ig_cap">Reels: 1 млн просмотров</figcaption></figure>
+        <figure class="phone"><a href="img/ig-grid2.jpg" class="zoom screen"><img src="img/ig-grid2.jpg" alt="Сетка Reels Shadows of Africa: 1,7 млн и 75,5 тыс. просмотров" loading="lazy"></a><figcaption data-i18n="k3_p3">Reels: 1,7 млн просмотров</figcaption></figure>
+        <figure class="phone"><a href="img/ig-grid1.jpg" class="zoom screen"><img src="img/ig-grid1.jpg" alt="Сетка Reels Shadows of Africa: 925 тыс. просмотров" loading="lazy"></a><figcaption data-i18n="k3_p4">Reels: 925K просмотров</figcaption></figure>
+        <figure class="phone"><a href="img/soa-ig-growth.jpg" class="zoom screen"><img src="img/soa-ig-growth.jpg" alt="Instagram Insights: +232 подписчика за неделю" loading="lazy"></a><figcaption data-i18n="k3_ig_cap4">Insights: +232 подписчика за неделю</figcaption></figure>
+      </div>
+      <div class="gfacts">
+        <div><b>25,3K → 30K</b><span data-i18n="k3_i4">рост подписчиков за время моей работы</span></div>
+        <div><b>2,57 млн</b><span data-i18n="k3_i1">просмотров за 30 дней, 96% - не подписчики</span></div>
+        <div><b>1,27 млн</b><span data-i18n="k3_i5">аккаунтов охвата за 30 дней (+1 397%)</span></div>
+        <div><b>1,7 млн</b><span data-i18n="k3_i2">просмотров у самого популярного Reels</span></div>
+        <div><b>98,9%</b><span data-i18n="k3_i3">просмотров приходят из Reels</span></div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- КЕЙС 03 · SAYAMA -->
+<section class="case case2" id="case-03">
+  <div class="case-head">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="k2_eyebrow">03. Кейс · Instagram · B2B и B2C</p>
+      <h2>Sayama Travel</h2>
+      <p data-i18n="k2_intro">Sayama Travel Group - принимающий туроператор в Таиланде (DMC): экскурсии и отели для туристов и турагентств. Год я вела социальные сети компании: писала и публиковала посты, выкладывала Stories и поддерживала присутствие бренда в соцсетях.</p>
+      <a class="ig" href="https://www.instagram.com/sayamatravelgroup/" target="_blank" rel="noopener">@sayamatravelgroup ↗</a>
+    </div>
+  </div>
+
+  <div class="gsr">
+    <div>
+      <div class="wrap gsr-in">
+        <p class="lead" data-i18n="k2_lead">Контент-сопровождение туристического бренда</p>
+        <dl>
+          <div class="row"><dt data-i18n="task_sy">Задача:</dt> <dd data-i18n="k2_goal">обеспечить регулярное присутствие туристического оператора в Instagram, поддерживать интерес аудитории к туристическим продуктам и выстроить понятную коммуникацию с путешественниками и партнёрами.</dd></div>
+          <div class="row"><dt data-i18n="strategy_sy">Моя роль:</dt> <dd data-i18n="k2_strategy">отвечала за ежедневное контент-сопровождение аккаунта: от подготовки текстов и публикации материалов до оформления Stories и актуальных разделов профиля.</dd></div>
+          <div class="row"><dt data-i18n="result">Результат:</dt> <dd data-i18n="k2_result">обеспечивала стабильную контент-активность аккаунта на протяжении года. Публикации помогали знакомить аудиторию с экскурсионными предложениями и поддерживали интерес к услугам компании. Контент также использовался как дополнительная точка контакта с потенциальными клиентами на пути к покупке экскурсий.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat hl"><b data-i18n="k2_st1b">1 год</b><span data-i18n="k2_st1">ведения соцсетей компании</span></div>
+      <div class="stat"><b>1 939</b><span data-i18n="k2_st2">подписчиков в Instagram</span></div>
+      <div class="stat"><b>1 268</b><span data-i18n="k2_st3">публикаций в аккаунте</span></div>
+      <div class="stat"><b>2</b><span data-i18n="k2_st4">аудитории: туристы и турагентства-партнёры</span></div>
+    </div>
+
+    <div class="sy-row">
+      <figure class="phone"><a href="img/sayama-ig.jpg" class="zoom screen"><img src="img/sayama-ig.jpg" alt="Instagram Sayama Travel Group: 1 939 подписчиков, 1 268 публикаций"></a><figcaption data-i18n="k2_ph">Instagram @sayamatravelgroup</figcaption></figure>
+      <div>
+        <h3 class="sub" data-i18n="k2_did">Направления контента</h3>
+        <div class="funnel two">
+          <div class="week"><small>01</small><h4 data-i18n="k2_d1t">Продуктовый</h4><p data-i18n="k2_d1">Презентация экскурсий, отелей и туристических направлений.</p></div>
+          <div class="week"><small>02</small><h4 data-i18n="k2_d2t">Информационный</h4><p data-i18n="k2_d2">Сезонные предложения, новости и полезные рекомендации путешественникам.</p></div>
+          <div class="week"><small>03</small><h4 data-i18n="k2_d3t">Репутационный</h4><p data-i18n="k2_d3">Отзывы туристов и контент, формирующий доверие к бренду.</p></div>
+          <div class="week"><small>04</small><h4 data-i18n="k2_d4t">Коммуникационный</h4><p data-i18n="k2_d4">Материалы для туристов и агентств-партнёров.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub" data-i18n="ps_t">Примеры постов</h3>
+    <div class="posts-row">
+      <figure class="post-ph">
+        <span class="tag" data-i18n="ps1_tag">Информационный</span>
+        <div class="ph-frame"><div class="ph-scroll"><img src="img/sy-post1.jpg" alt="Пост Sayama Travel: правила въезда в Таиланд" loading="lazy"></div><span class="ph-hint" data-i18n="ps_hint">↓ листайте пост</span></div>
+        <figcaption data-i18n="ps1">Правила въезда в Таиланд</figcaption>
+      </figure>
+      <figure class="post-ph">
+        <span class="tag" data-i18n="ps2_tag">Продуктовый</span>
+        <div class="ph-frame"><div class="ph-scroll"><img src="img/sy-post2.jpg" alt="Пост Sayama Travel: яхта Prestige 450" loading="lazy"></div><span class="ph-hint" data-i18n="ps_hint">↓ листайте пост</span></div>
+        <figcaption data-i18n="ps2">Яхта Prestige 450</figcaption>
+      </figure>
+    </div>
+    <h3 class="sub" data-i18n="cj_t">Путь клиента</h3>
+    <div class="cj-row">
+      <figure class="cj-shots">
+        <div class="cj-pair">
+          <a href="img/sy-dm1.jpg" class="zoom dm-shot"><img src="img/sy-dm1.jpg" alt="Гость пересылает Reels Sayama про Бангкок и спрашивает об экскурсиях" loading="lazy"></a>
+          <a href="img/sy-dm2.jpg" class="zoom dm-shot"><img src="img/sy-dm2.jpg" alt="Ответ с подборкой экскурсий по Бангкоку и уточняющими вопросами" loading="lazy"></a>
+        </div>
+      </figure>
+      <div class="cj-steps">
+        <div class="cj-step"><b>01</b><div><h4 data-i18n="cj1_t">Пост</h4><p data-i18n="cj1">Публикация об экскурсии: маршрут, фото, что входит в программу.</p></div></div>
+        <div class="cj-step"><b>02</b><div><h4 data-i18n="cj2_t">Интерес</h4><p data-i18n="cj2">Сохранения, репосты, вопросы в комментариях и Stories.</p></div></div>
+        <div class="cj-step"><b>03</b><div><h4 data-i18n="cj3_t">Сообщение в директ</h4><p data-i18n="cj3">Гость пересылает Reels и спрашивает, какие есть экскурсии.</p></div></div>
+        <div class="cj-step"><b>04</b><div><h4 data-i18n="cj4_t">Подбор и запись</h4><p data-i18n="cj4">Отвечаем подборкой экскурсий, уточняем даты и отель, бронируем.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI-ВИЗУАЛ -->
+<section class="ai" id="ai">
+  <div class="wrap">
+    <h2 class="sec-title"><span data-i18n="ai_a">AI-</span><span class="it" data-i18n="ai_b">визуал</span></h2>
+    <p class="ai-lead" data-i18n="ai_lead">Создаю визуал для соцсетей с помощью нейросетей: бьюти- и фэшн-кадры, рекламные кампании, предметную съёмку и короткие видео для Reels.</p>
+    <div class="mosaic">
+      <figure class="w2 h2"><img src="img/glace-lips.jpg" alt="GLACÉ: рекламный баннер" loading="lazy"></figure>
+      <figure class="h2"><video src="img/ai-video.mp4" poster="img/ai-video-poster.jpg" autoplay muted loop playsinline preload="metadata"></video><figcaption>▶ video</figcaption></figure>
+      <figure class="h2"><img src="img/mj-blonde.jpg" alt="Бьюти-портрет" loading="lazy"></figure>
+      <figure class="h2"><video src="img/v2.mp4" poster="img/v2.jpg" autoplay muted loop playsinline preload="metadata"></video><figcaption>▶ video</figcaption></figure>
+      <figure class=""><img src="img/mj-cheek.jpg" alt="Бьюти-портрет" loading="lazy"></figure>
+      <figure class=""><img src="img/satin.jpg" alt="Фактура атласа" loading="lazy"></figure>
+      <figure class=""><img src="img/ai-2.jpg" alt="Украшения под водой" loading="lazy" style="object-position:50% 40%"></figure>
+      <figure class=""><img src="img/ai-3.jpg" alt="Браслеты" loading="lazy"></figure>
+      <figure class=""><video src="img/v1.mp4" poster="img/v1.jpg" autoplay muted loop playsinline preload="metadata"></video><figcaption>▶ video</figcaption></figure>
+      <figure class=""><img src="img/ai-4.jpg" alt="Яхта" loading="lazy"></figure>
+      <figure class=""><img src="img/mj-straw2.jpg" alt="Портрет с клубникой" loading="lazy"></figure>
+      <figure class="w2"><img src="img/ai-1.jpg" alt="Купальник" loading="lazy"></figure>
+      <figure class=""><img src="img/dress-back.jpg" alt="Платье, спина" loading="lazy" style="object-position:50% 20%"></figure>
+      <figure class="w2 h2"><video src="img/v5.mp4" poster="img/v5.jpg" autoplay muted loop playsinline preload="metadata"></video><figcaption>▶ video</figcaption></figure>
+      <figure class="h2"><img src="img/moto.jpg" alt="Fashion-кадр с мотоциклом" loading="lazy"></figure>
+      <figure class="h2"><video src="img/v4.mp4" poster="img/v4.jpg" autoplay muted loop playsinline preload="metadata"></video><figcaption>▶ video</figcaption></figure>
+    </div>
+    <div class="ai-tools"><a class="ig-btn" href="https://www.instagram.com/art.bymhz/" target="_blank" rel="noopener"><span data-i18n="ig_btn">Больше работ в Instagram</span> @art.bymhz ↗</a><span class="chip">Midjourney</span><span class="chip">Higgsfield</span><span class="chip">Kling</span></div>
+  </div>
+</section>
+
+<!-- ПОДХОД -->
+<section id="approach" style="padding-top:0">
+  <div class="wrap">
+    <h2 class="sec-title"><span data-i18n="ap_a">Как я</span> <span class="it" data-i18n="ap_b">работаю</span></h2>
+    <div class="steps">
+      <div class="step"><b>01</b><span class="dur" data-i18n="a1_d">1-2 дня</span><h3 data-i18n="a1_t">Аудит</h3><p data-i18n="a1">Изучаю продукт, аудиторию, конкурентов и текущие аккаунты: что работает, а что нет.</p></div>
+      <div class="step"><b>02</b><span class="dur" data-i18n="a2_d">1-3 часа</span><h3 data-i18n="a2_t">Бриф</h3><p data-i18n="a2">Созвон с командой: цели, задачи, ожидания, ценности бренда и ограничения.</p></div>
+      <div class="step"><b>03</b><span class="dur" data-i18n="a3_d">~7 дней</span><h3 data-i18n="a3_t">Стратегия</h3><p data-i18n="a3">Площадки, сегменты аудитории, рубрики, воронка и форматы контента.</p></div>
+      <div class="step"><b>04</b><span class="dur" data-i18n="a4_d">1-3 дня</span><h3 data-i18n="a4_t">Контент-план</h3><p data-i18n="a4">Темы, форматы и график публикаций на несколько недель или месяц вперёд.</p></div>
+      <div class="step"><b>05</b><span class="dur" data-i18n="a5_d">постоянно</span><h3 data-i18n="a5_t">Запуск</h3><p data-i18n="a5">Пишу тексты, делаю визуал и видео, публикую и общаюсь с аудиторией.</p></div>
+      <div class="step"><b>06</b><span class="dur" data-i18n="a6_d">раз в месяц</span><h3 data-i18n="a6_t">Отчёт</h3><p data-i18n="a6">Охваты, вовлечённость и заявки. Оставляю то, что работает, и корректирую план.</p></div>
+    </div>
+
+    <div class="format">
+      <h3 class="fmt-title" data-i18n="fm_t">Формат работы</h3>
+      <dl class="fmt">
+        <div><dt data-i18n="fm1_t">Где</dt><dd data-i18n="fm1">Удалённо, Таиланд</dd></div>
+        <div><dt data-i18n="fm2_t">Часовой пояс</dt><dd data-i18n="fm2">UTC+7, пересекаюсь с Москвой и Европой</dd></div>
+        <div><dt data-i18n="fm3_t">Занятость</dt><dd data-i18n="fm3">Full-time или part-time, в штат или на проект</dd></div>
+        <div><dt data-i18n="fm4_t">Языки</dt><dd data-i18n="fm4">Русский - родной, английский - пишу посты для англоязычной аудитории</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div class="marquee alt" aria-hidden="true">
+  <div class="marquee-track">
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+    <b>✦</b><span data-i18n="mq6">Open to Work! · давайте работать вместе ·</span>
+  </div>
+</div>
+
+<!-- КОНТАКТЫ -->
+<section class="foot" id="contact">
+  <div class="wrap">
+    <div class="foot-grid"><div><h2><span data-i18n="f_a">Open to Work!</span><br><span class="it" data-i18n="f_b">давайте работать вместе</span></h2>
+    <p class="open" data-i18n="f_open">Ищу работу SMM-менеджером: в штат или на проект, удалённо.</p>
+    </div></div>
+    <div class="links">
+      <a href="mailto:valerii.mhz@gmail.com">Email<span>valerii.mhz@gmail.com</span></a>
+      <a href="https://t.me/valeriimhz">Telegram<span>@valeriimhz</span></a>
+      <a href="https://www.linkedin.com/in/valeriia-manzhosova-87b906438/">LinkedIn<span data-i18n="name2">Валерия Манжосова</span></a>
+    </div>
+    <div class="copy">
+      <span data-i18n="f_copy">© 2026 Валерия Манжосова · SMM-менеджер</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ПЕРЕВОД. Русский текст уже стоит на странице.
+   Чтобы добавить английский: заполнить I18N.en теми же ключами - кнопка EN появится сама. */
+document.querySelectorAll('.post').forEach(p=>{
+  const t=p.querySelector('.post-text'),b=p.querySelector('.more');
+  b.addEventListener('click',()=>{const o=t.classList.toggle('clamp');b.textContent=o?'…see more':'see less';});
+});
+document.querySelectorAll('.carousel').forEach(c=>{
+  const tr=c.querySelector('.car-track'),n=tr.children.length,cnt=c.querySelector('.car-count');let i=0;
+  const go=d=>{i=(i+d+n)%n;tr.style.transform=`translateX(-${i*100}%)`;cnt.textContent=`${i+1} / ${n}`;};
+  c.querySelector('.prev').addEventListener('click',()=>go(-1));
+  c.querySelector('.next').addEventListener('click',()=>go(1));
+});
+const I18N = { en: {"name": "Valeriia Manzhosova", "nav_about": "About", "nav_work": "Cases", "nav_ai": "AI visuals", "nav_approach": "Approach", "nav_contact": "Contact", "year": "Portfolio · 2026", "role_a": "// SMM manager", "role_b": "strategy & content", "intro": "With character. With results.", "c_mail": "Email", "c_tg": "Telegram", "c_li": "LinkedIn", "name3": "Valeriia Manzhosova", "giant_a": "SMM", "giant_b": "portfolio", "mq": "strategy · content · analytics ·", "ab_a": "About", "ab_b": "me", "ab_lead": "3+ years in SMM. Fintech and travel, B2B and B2C. Based in Thailand, working remotely.", "ab_edu": "Kuban State University, BA in Congress and Exhibition Services, 2020-2024.", "cv_btn": "CV (PDF) ↗", "j1_when": "since June 2026", "j1": "AI sales coach for sales managers. LinkedIn and Instagram, up to 21 posts a week: idea, copy, visuals, video.", "do_a": "What I", "do_b": "do", "s1_t": "SMM strategy", "s1_d": "Audit, positioning, goals and funnel: what we say, to whom, and why.", "s2_t": "Content plan", "s2_d": "Content pillars, frequency, formats and a month-ahead publishing calendar.", "s3_t": "Copywriting", "s3_d": "Posts, headlines and calls to action in Russian and English.", "s4_t": "Visual and video briefs", "s4_d": "Briefs for designers, content creators and video editors: carousels, covers, shoots and on-brand video.", "s5_t": "B2B & LinkedIn", "s5_d": "Promoting complex business products without empty promises.", "s6_t": "Analytics", "s6_d": "Reach, engagement, leads: I read the numbers and adjust the plan.", "platforms": "Platforms", "tools": "Tools", "toc": "Cases", "toc1_tag": "LinkedIn · B2B · AI for banks", "toc2": "Next case", "toc_soon": "coming soon", "toc3": "Next case", "c1_eyebrow": "01. Case · LinkedIn", "c1_intro": "SMM strategy and a 30-day content plan for a corporate LinkedIn page. The product is Knowledge Base, an AI knowledge assistant for banks. Audience: the English-speaking banking market.", "c1_lead": "A tech-heavy B2B product that banks need explained", "goal": "Goal:", "c1_goal": "product awareness and demo requests.", "strategy": "Strategy:", "c1_strategy": "the month is split into four AIDA funnel stages, and every post has its own job. We only use confirmed facts: no invented clients, numbers or certifications.", "result": "Result:", "c1_result": "200-300 views per post and first comments on a brand-new company page that is just building its audience. Plus a complete strategy, content plan and 18 posts with visual briefs.", "st0": "views per post on a new page", "st2": "posts in English", "st1": "days in the content plan", "st4": "funnel stages", "c1_funnel": "A month as a funnel", "w1_n": "Week 1", "w1": "Introduce the market to the problem and the product.", "w2_n": "Week 2", "w2": "Explain how Knowledge Base works.", "w3_n": "Week 3", "w3": "Address banks' main concerns: security and value.", "w4_n": "Week 4", "w4": "Lead up to a demo request.", "aida": "AIDA works on two levels: across the month and inside every post.", "c1_posts": "Published on LinkedIn", "ph3": "Carousel · 5 slides", "ph1": "Post · Knowledge Base", "ph2": "Post · On-premises AI", "posts_note": "Screenshots of the company's LinkedIn page: post copy and visuals are mine.", "c1_brand": "Brand visual style", "sw1": "Primary dark", "sw2": "Dark background", "sw3": "Accent", "sw4": "Blue", "sw5": "Light blue", "sw6": "Light background", "type_d": "The brand's only typeface. Light and dark slides alternate; official logo only.", "c1_how": "Working within strict limits", "lim_t": "Constraints", "lim1": "The founder and employees can't be shown, so all promotion runs from the company page only.", "lim2": "Confirmed facts only: no invented case studies or statistics.", "lim3": "One product in focus, no drifting into adjacent topics.", "del_t": "What I delivered", "del1": "A 25-35 slide strategy deck.", "del2": "A 30-day content plan in a spreadsheet.", "del3": "18 ready-to-publish English posts with visual briefs.", "del4": "A post visual style in the brand palette.", "next_d": "The campaign is ongoing.", "ai_a": "AI ", "ai_b": "visuals", "ai_lead": "I create social media visuals with AI: beauty and fashion shots, ad campaigns, product shots and short videos for Reels.", "ai_v": "Video · Higgsfield", "n2_t": "Coming soon", "n2_d": "The next case will appear here in the same format: goal, strategy, result.", "n3_t": "Coming soon", "n3_d": "One more case will appear here.", "ap_a": "How I", "ap_b": "work", "a1_t": "Audit", "a1": "I study the product, audience, competitors and current accounts: what works and what doesn't.", "a2_t": "Brief", "a2": "A call with the team: goals, tasks, expectations, brand values and constraints.", "a3_t": "Strategy", "a3": "Platforms, audience segments, content pillars, funnel and formats.", "a4_t": "Content plan", "a4": "Topics, formats and a publishing schedule for several weeks or a month ahead.", "f_a": "Open to Work!", "f_b": "let's work together", "f_open": "Looking for an SMM manager role: in-house or project-based, remote.", "pl0f": "Reels", "pl0t": "Pattaya is more than a city", "pl0g": "Reach / emotion", "pl1f": "Stories", "pl1t": "Sea or jungle? Poll", "pl1g": "Engagement", "pl2f": "Carousel", "pl2t": "How to choose a tour in Pattaya", "pl2g": "Saves", "pl3f": "Stories", "pl3t": "3 questions tourists ask most", "pl3g": "Trust", "pl4f": "Reels", "pl4t": "A day on a sea tour: POV", "pl4g": "Product interest", "pl5f": "Stories", "pl5t": "Behind the scenes before a trip", "pl5g": "Human touch", "pl6f": "Stories", "pl6t": "Followers choose what's next", "pl6g": "Feedback", "pl7f": "Reels", "pl7t": "Three moments people love tours for", "pl7g": "Reach / emotion", "pl8f": "Stories", "pl8t": "What to pack for a sea tour", "pl8g": "Usefulness", "pl9f": "Carousel", "pl9t": "Sea, culture or adventure: which is yours?", "pl9g": "Choosing a direction", "pl10f": "Stories", "pl10t": "Meet the guide: Q&A", "pl10g": "Trust", "pl11f": "Reels", "pl11t": "One route, five unforgettable details", "pl11g": "Reach / interest", "pl12f": "Stories", "pl12t": "How tour formats differ", "pl12g": "Usefulness", "pl13f": "Stories", "pl13t": "Pick of the week + audience question", "pl13g": "Engagement", "toc2_tag": "Instagram · B2B/B2C · travel", "name2": "Valeriia Manzhosova", "f_copy": "© 2026 Valeriia Manzhosova · SMM manager", "a1_d": "1-2 days", "a2_d": "1-3 hours", "a3_d": "~7 days", "a4_d": "1-3 days", "a5_d": "ongoing", "a5_t": "Launch", "a5": "I write copy, create visuals and video, publish and engage with the audience.", "a6_d": "monthly", "a6_t": "Report", "a6": "Reach, engagement and leads. I keep what works and adjust the plan.", "fm_t": "How I work", "fm1_t": "Location", "fm1": "Remote, Thailand", "fm2_t": "Time zone", "fm2": "UTC+7, overlaps with Moscow and Europe", "fm3_t": "Employment", "fm3": "Full-time or part-time, in-house or project-based", "fm4_t": "Languages", "fm4": "Russian (native), English: I write posts for English-speaking audiences", "sr1_t": "GLACÉ - beauty brand", "sr1": "A brand concept for lip gloss and mascara: packaging, product shots, textures and an ad banner.", "sr2_t": "Fragrance · campaign", "sr2": "A perfume ad campaign: black sand, a storm and a heroine in white. Video and stills in one story.", "sr3_t": "Fashion · lookbook", "sr3": "An evening dress shoot for e-commerce: front, back, fabric texture and a Reels video.", "sr4_t": "Summer · yacht & jewellery", "sr4": "Lifestyle shots and short Reels videos, plus jewellery product shots.", "sr5_t": "Beauty · Midjourney", "sr5": "Close-up beauty portraits, abstract backgrounds and short videos: from a lipstick macro to a cinematic shot.", "ig_btn": "More work on Instagram", "k3_eyebrow": "02. Case · YouTube · Instagram · e-mail", "k3_intro": "A tour operator running safaris and trips across Africa. For three years I was responsible for all of the company's content, from communication strategy to posts, video, newsletters and landing pages, and I managed a team of a video editor, a designer and a copywriter.", "k3_lead": "All of the brand's content in one pair of hands: from strategy to team", "k3_goal": "build a recognisable brand on social media and bring the audience to tours.", "k3_strategy": "a full company communication strategy, a bet on video (YouTube and Reels), separate B2B and B2C newsletters, and landing pages for tours and destinations.", "k3_result": "a YouTube channel grown from zero to 29,100 subscribers, Instagram growth of 10,000+ followers through Reels, and a working three-person content team.", "k3_st1": "YouTube subscribers", "k3_st2": "Instagram followers through Reels", "k3_st3": "people on the team I managed", "k3_did": "What I did", "k3_d1n": "Strategy", "k3_d1t": "Brand communication", "k3_d1": "A full company communication strategy: platforms, brand voice, content pillars and formats.", "k3_d2n": "Content", "k3_d2t": "All social channels", "k3_d2": "All of the content: posts on every social network, Reels, YouTube videos and the website blog.", "k3_d3n": "E-mail", "k3_d3t": "B2B and B2C newsletters", "k3_d3": "A newsletter for partner agencies and a separate one for existing clients.", "k3_d4n": "Team", "k3_d4t": "Video editor, designer, copywriter", "k3_d4": "I set tasks, reviewed work and kept the content style consistent. Plus landing pages for individual tours and destinations.", "k3_ch": "Channels", "k3_c1": "from 0 to 29,100 subscribers", "k3_c2": "+10,000 followers through Reels", "k3_c3t": "Website & blog", "k3_c3": "articles and tour landing pages", "k3_c4": "posts and promotion", "k3_next": "examples of videos, newsletters and landing pages are coming soon.", "toc3_tag": "YouTube · Instagram · B2B/B2C · travel", "k3_shots": "How it looks today", "k3_sh1": "YouTube: 29.1K subscribers, 1K+ videos", "k3_sh2": "Instagram: 33.6K followers today", "k3_sh3": "Website: blog and tour landing pages", "k3_sh_note": "Screenshots of public pages, November 2026. Numbers are current; they may have changed since I left.", "k3_gr": "YouTube Studio statistics", "k3_gr_cap": "YouTube Studio, lifetime: 10.7M views, 85.6K watch hours, +29K subscribers.", "k3_g1": "subscribers over the channel's lifetime", "k3_g2": "hours of watch time", "k3_g3": "total channel views", "k3_top": "The channel's most popular Shorts", "k3_t1": "views on the most popular Short", "k3_t2": "on the second", "k3_t3": "on the third", "k3_ph3": "While I ran it: 20K subscribers", "k3_ig": "Follower growth", "k3_ig_cap": "Reel: 1M plays", "k3_i1": "views in 30 days, 96% from non-followers", "k3_i2": "views on the most popular Reel", "k3_i3": "of views come from Reels", "k3_ig_cap2": "While I ran it: 25.3K followers", "k3_i4": "follower growth while I ran the account", "k3_ig_cap3": "26.1K followers, 54K reach in 30 days", "k3_ig_cap4": "Insights: +232 followers in a week", "k3_i5": "accounts reached in 30 days (+1,397%)", "k3_tl1": "54K reach in 30 days", "k3_tl2": "201K reach in 30 days", "k3_tl3": "472K reach in 30 days", "k3_tl5": "2.2M views in 30 days", "k3_grp_ig": "Instagram", "k3_grp_yt": "YouTube", "k3_grp_pub": "Public pages", "k3_ig2": "Reels and reach", "k3_p1": "Insights: 2.57M views in 30 days", "k3_p3": "Reels: 1.7M views", "k3_p4": "Reels: 925K views", "k2_eyebrow": "03. Case · Instagram · B2B & B2C", "k2_intro": "Sayama Travel Group is an inbound tour operator (DMC) in Thailand: tours and hotels for travellers and travel agencies. For a year I ran the company's social media: writing and publishing posts, posting Stories and keeping the brand present on social.", "k2_lead": "Content support for a travel brand", "k2_goal": "ensure the tour operator's regular presence on Instagram, keep the audience interested in travel products and build clear communication with travellers and partners.", "strategy_sy": "My role:", "k2_strategy": "responsible for day-to-day content support of the account: from writing copy and publishing materials to designing Stories and profile highlights.", "k2_result": "kept the account consistently active for a whole year. The posts introduced the audience to tour offers and kept interest in the company's services. The content also served as an extra touchpoint with potential customers on their way to buying tours.", "k2_st1b": "1 year", "k2_st1": "running the company's social media", "k2_st2": "Instagram followers", "k2_st3": "posts on the account", "k2_st4": "audiences: travellers and partner agencies", "k2_ph": "Instagram @sayamatravelgroup", "k2_did": "Content directions", "k2_d1t": "Product", "k2_d1": "Presenting tours, hotels and travel destinations.", "k2_d2t": "Informational", "k2_d2": "Seasonal offers, news and useful tips for travellers.", "k2_d3t": "Reputation", "k2_d3": "Traveller reviews and content that builds trust in the brand.", "k2_d4t": "Communication", "k2_d4": "Materials for travellers and partner agencies.", "k2_note2": "Account numbers in the screenshot are company totals, November 2026.", "task_sy": "Task:", "cj_t": "Customer journey", "cj_cap": "A real enquiry in @sayamatravelgroup Direct: the guest came from a Reel about Bangkok. Client name hidden.", "cj1_t": "Post", "cj1": "A post about a tour: the route, photos, what's included.", "cj2_t": "Interest", "cj2": "Saves, shares, questions in comments and Stories.", "cj3_t": "Direct message", "cj3": "The guest shares the Reel and asks which tours are available.", "cj4_t": "Matching and booking", "cj4": "We reply with a selection of tours, check dates and hotel, and book.", "ps_t": "Post examples", "ps_hint": "↓ scroll the post", "ps1_tag": "Informational", "ps1": "Thailand entry rules", "ps2_tag": "Product", "ps2": "Prestige 450 yacht", "mq6": "Open to Work! · let's work together ·"} };
+(function(){
+  const btn = document.getElementById('lang');
+  const els = document.querySelectorAll('[data-i18n]');
+  const ru = {};
+  els.forEach(el => { ru[el.dataset.i18n] = el.textContent; });
+  function apply(lang){
+    const dict = lang === 'en' ? I18N.en : ru;
+    els.forEach(el => { const v = dict[el.dataset.i18n]; if (v) el.textContent = v; });
+    document.documentElement.lang = lang;
+    btn.textContent = lang === 'en' ? 'RU' : 'EN';
+    try { localStorage.setItem('lang', lang); } catch(e) {}
+  }
+  let cur = 'ru';
+  try { if (localStorage.getItem('lang') === 'en' || location.hash === '#en') cur = 'en'; } catch(e) {}
+  if (cur === 'en') apply('en');
+  btn.addEventListener('click', () => { cur = cur === 'ru' ? 'en' : 'ru'; apply(cur); });
+})();
+</script>
+<div class="lb" id="lb" role="dialog" aria-label="Скриншот"><img alt=""></div>
+<script>
+(function(){const lb=document.getElementById('lb'),im=lb.querySelector('img');
+document.querySelectorAll('a.zoom').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();im.src=a.getAttribute('href');im.alt=a.querySelector('img').alt;lb.classList.add('on');}));
+lb.addEventListener('click',()=>lb.classList.remove('on'));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on');});})();
+</script>
+<script>
+document.querySelectorAll('.ph-scroll').forEach(s=>s.addEventListener('scroll',()=>{if(s.scrollTop>20)s.parentElement.classList.add('scrolled')},{passive:true}));
+</script>
+</body>
+</html>
